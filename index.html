@@ -3,84 +3,352 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — Quantity Measurement App</title>
-  <link rel="stylesheet" href="css/auth.css" />
+  <title>Quanment — Quantity Measurement</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    body { overflow-x: hidden; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.25);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(34px, 6vw, 58px);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.4);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(79,142,247,0.55);
+    }
+
+    .btn-hero-outline {
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-hero-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Feature cards */
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .features-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-color, var(--accent)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      background: var(--surface-2);
+      border-color: rgba(255,255,255,0.13);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-card-1 { --card-color: #4f8ef7; }
+    .feature-card-2 { --card-color: #7c5af0; }
+    .feature-card-3 { --card-color: #22d3a5; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .feature-card-1 .feature-icon { background: rgba(79,142,247,0.15); }
+    .feature-card-2 .feature-icon { background: rgba(124,90,240,0.15); }
+    .feature-card-3 .feature-icon { background: rgba(34,211,165,0.15); }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 9px;
+      color: var(--text-primary);
+    }
+
+    .feature-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .feature-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .feature-card-2 .feature-link { color: #9d82f5; }
+    .feature-card-3 .feature-link { color: var(--success); }
+
+    /* Stats row */
+    .stats {
+      max-width: 960px;
+      margin: 0 auto 60px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 720px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 48px 20px 40px; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="auth-scene">
-
-    <div class="auth-bg">
-      <div class="grid-overlay"></div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">⚖️</div>
+      <span class="nav-brand-name">Quan<span>ment</span></span>
+    </a>
+    <div class="nav-center">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="history.html" class="nav-link">History</a>
     </div>
+    <div class="nav-right" id="navRight">
+      <!-- Filled by auth.js -->
+    </div>
+  </nav>
 
-    <div class="auth-card">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">⚡ Microservices Powered</div>
+    <h1>Measure Anything,<br><span>Convert Everything</span></h1>
+    <p>Compare, convert, and calculate across length, temperature, volume, and weight — all in one place.</p>
+    <div class="hero-btns">
+      <a href="operations.html" class="btn-hero-primary">Start Converting →</a>
+      <a href="signup.html" class="btn-hero-outline">Create Free Account</a>
+    </div>
+  </section>
 
-      <div class="auth-brand">
-        <div class="brand-icon">⚖️</div>
-        <div class="brand-name">Quantity<span>App</span></div>
-      </div>
-
-      <h1 class="auth-title">Welcome back</h1>
-      <p class="auth-subtitle">Sign in to your account to continue</p>
-
-      <div id="alert" class="alert" role="alert">
-        <span>⚠️</span>
-        <span class="alert-msg"></span>
-      </div>
-
-      <button id="googleLoginBtn" class="btn-google" type="button">
-        <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-        </svg>
-        <span>Continue with Google</span>
-      </button>
-
-      <div class="auth-divider">OR</div>
-
-      <form id="loginForm" class="auth-form" novalidate>
-
-        <div class="field-group">
-          <label class="field-label" for="username">Username</label>
-          <input
-            id="username"
-            class="field-input"
-            type="text"
-            placeholder="Enter your username"
-            autocomplete="username"
-            required
-          />
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="password">Password</label>
-          <input
-            id="password"
-            class="field-input"
-            type="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-
-        <button id="loginBtn" class="btn-primary" type="submit">
-          <span class="btn-text">Sign In</span>
-          <span class="spinner"></span>
-        </button>
-
-      </form>
-
-      <div class="auth-footer">
-        Don't have an account? <a href="register.html">Create one</a>
-      </div>
-
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Measurement Types</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Operations</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">12</div>
+      <div class="stat-label">Unit Options</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">100%</div>
+      <div class="stat-label">Free to Use</div>
     </div>
   </div>
 
+  <!-- FEATURE CARDS -->
+  <section class="features">
+    <div class="features-label">What you can do</div>
+    <div class="features-grid">
+
+      <a href="operations.html" class="feature-card feature-card-1">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-title">Compare &amp; Convert</div>
+        <div class="feature-desc">Instantly convert between units or compare two quantities to see which is greater.</div>
+        <div class="feature-link">Try it <span>→</span></div>
+      </a>
+
+      <a href="operations.html" class="feature-card feature-card-2">
+        <div class="feature-icon">🔢</div>
+        <div class="feature-title">Operations</div>
+        <div class="feature-desc">Add, subtract, and divide quantities — even across different unit types.</div>
+        <div class="feature-link">Try it <span>→</span></div>
+      </a>
+
+      <a href="history.html" class="feature-card feature-card-3">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">History</div>
+        <div class="feature-desc">Every operation is saved. Review your past calculations anytime after signing in.</div>
+        <div class="feature-link">View History <span>→</span></div>
+      </a>
+
+    </div>
+  </section>
+
   <script src="js/auth.js"></script>
+  <script>
+    // ── OAuth2 Callback Handler ──────────────────────────────────
+    // Your backend (OAuthController) redirects here after Google login:
+    //   http://localhost:5500/index.html?token=JWT&email=Name
+    // We catch that token, save it, and redirect to operations.
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const token  = params.get('token') || params.get('jwt');
+      const name   = params.get('email') || params.get('name') || 'Google User';
+
+      if (token) {
+        saveToken(token, decodeURIComponent(name));
+        // Remove token from URL so it's not visible or re-processed
+        window.history.replaceState({}, document.title, window.location.pathname);
+        window.location.href = 'operations.html';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — Quanment</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">⚖️</div>
+      <span class="nav-brand-name">Quan<span>ment</span></span>
+    </a>
+    <div class="nav-center">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="history.html" class="nav-link">History</a>
+    </div>
+    <div class="nav-right" id="navRight"></div>
+  </nav>
+
+  <!-- SIGNUP FORM -->
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <div class="auth-brand">
+        <div class="brand-icon">⚖️</div>
+        <div class="brand-name">Quan<span>ment</span></div>
+      </div>
+
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">Join and start measuring quantities</p>
+
+      <div id="signupAlert" class="alert" role="alert">
+        <span>⚠️</span>
+        <span class="alert-msg"></span>
+      </div>
+
+      <form id="signupForm" class="auth-form" novalidate>
+
+        <div class="field-group">
+          <label class="field-label" for="username">Username</label>
+          <input
+            id="username"
+            class="field-input"
+            type="text"
+            placeholder="Choose a username"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password">Password</label>
+          <input
+            id="password"
+            class="field-input"
+            type="password"
+            placeholder="Create a password (min 6 chars)"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password2">Confirm Password</label>
+          <input
+            id="password2"
+            class="field-input"
+            type="password"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <button id="signupBtn" class="btn-primary btn-auth" type="submit">
+          <span class="btn-text">Create Account</span>
+          <span class="spinner"></span>
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>

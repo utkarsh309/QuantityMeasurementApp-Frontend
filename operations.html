@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Operations — Quanment</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <style>
+    /* Override: remove the old fixed header offset; we use sticky navbar */
+    .app-main { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">⚖️</div>
+      <span class="nav-brand-name">Quan<span>ment</span></span>
+    </a>
+    <div class="nav-center">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="operations.html" class="nav-link active">Operations</a>
+      <a href="history.html" class="nav-link">History</a>
+    </div>
+    <div class="nav-right" id="navRight"></div>
+  </nav>
+
+  <main class="app-main">
+
+    <div class="welcome-bar">
+      <div class="welcome-text">
+        <h1>Quantity Operations</h1>
+        <p>Convert, compare, add, subtract, and divide across length, temperature, volume, and weight.</p>
+      </div>
+      <div class="welcome-deco">QM</div>
+    </div>
+
+    <div class="section-label">Select Measurement Type</div>
+    <div class="type-grid">
+      <div class="type-card active" data-type="LENGTH">
+        <div class="type-icon">📏</div>
+        <div class="type-label">LENGTH</div>
+      </div>
+      <div class="type-card" data-type="TEMPERATURE">
+        <div class="type-icon">🌡️</div>
+        <div class="type-label">TEMPERATURE</div>
+      </div>
+      <div class="type-card" data-type="VOLUME">
+        <div class="type-icon">🧪</div>
+        <div class="type-label">VOLUME</div>
+      </div>
+      <div class="type-card" data-type="WEIGHT">
+        <div class="type-icon">⚖️</div>
+        <div class="type-label">WEIGHT</div>
+      </div>
+    </div>
+
+    <div class="section-label">Select Operation</div>
+    <div class="op-tabs">
+      <button class="op-tab active" data-op="CONVERT">
+        <span class="tab-icon">🔄</span> Convert
+      </button>
+      <button class="op-tab" data-op="COMPARE">
+        <span class="tab-icon">⚖️</span> Compare
+      </button>
+      <button class="op-tab" data-op="ADD">
+        <span class="tab-icon">➕</span> Add
+      </button>
+      <button class="op-tab" data-op="SUBTRACT">
+        <span class="tab-icon">➖</span> Subtract
+      </button>
+      <button class="op-tab" data-op="DIVIDE">
+        <span class="tab-icon">➗</span> Divide
+      </button>
+    </div>
+
+    <div class="card">
+
+      <div id="dashAlert" class="alert" role="alert">
+        <span>⚠️</span><span class="alert-msg"></span>
+      </div>
+
+      <!-- CONVERT -->
+      <div class="op-panel active" id="panel-CONVERT">
+        <div class="section-label">Convert</div>
+        <div class="input-row two-col">
+          <div class="field">
+            <div class="field-label">From</div>
+            <div class="input-group">
+              <input id="cv-fromVal" class="val-input" type="number" placeholder="Enter value"/>
+              <select id="cv-fromUnit" class="unit-select"></select>
+            </div>
+          </div>
+          <div class="arrow-col"><div class="arrow-icon">→</div></div>
+          <div class="field">
+            <div class="field-label">To</div>
+            <div class="input-group">
+              <input id="cv-toVal" class="val-input result-green" type="text" placeholder="Result" readonly/>
+              <select id="cv-toUnit" class="unit-select"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-CONVERT">
+          <span class="btn-text">🔄 &nbsp;Convert</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="result-panel" id="res-CONVERT">
+          <div class="result-icon">✅</div>
+          <div>
+            <div class="result-lbl">Result</div>
+            <div class="result-val" id="resVal-CONVERT">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPARE -->
+      <div class="op-panel" id="panel-COMPARE">
+        <div class="section-label">Compare two quantities</div>
+        <div class="input-row two-col">
+          <div class="field">
+            <div class="field-label">Quantity 1</div>
+            <div class="input-group">
+              <input id="cmp-val1" class="val-input" type="number" placeholder="Value"/>
+              <select id="cmp-unit1" class="unit-select"></select>
+            </div>
+          </div>
+          <div class="arrow-col"><div class="arrow-icon">⚖️</div></div>
+          <div class="field">
+            <div class="field-label">Quantity 2</div>
+            <div class="input-group">
+              <input id="cmp-val2" class="val-input" type="number" placeholder="Value"/>
+              <select id="cmp-unit2" class="unit-select"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-COMPARE">
+          <span class="btn-text">⚖️ &nbsp;Compare</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="compare-badge" id="res-COMPARE">
+          <span class="compare-icon" id="cmp-icon">—</span>
+          <span class="compare-text" id="cmp-text">—</span>
+        </div>
+      </div>
+
+      <!-- ADD -->
+      <div class="op-panel" id="panel-ADD">
+        <div class="section-label">Add two quantities</div>
+        <div class="input-row two-col">
+          <div class="field">
+            <div class="field-label">Quantity 1</div>
+            <div class="input-group">
+              <input id="add-val1" class="val-input" type="number" placeholder="Value"/>
+              <select id="add-unit1" class="unit-select"></select>
+            </div>
+          </div>
+          <div class="arrow-col"><div class="arrow-icon">+</div></div>
+          <div class="field">
+            <div class="field-label">Quantity 2</div>
+            <div class="input-group">
+              <input id="add-val2" class="val-input" type="number" placeholder="Value"/>
+              <select id="add-unit2" class="unit-select"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-ADD">
+          <span class="btn-text">➕ &nbsp;Add</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="result-panel" id="res-ADD">
+          <div class="result-icon">✅</div>
+          <div>
+            <div class="result-lbl">Result</div>
+            <div class="result-val" id="resVal-ADD">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBTRACT -->
+      <div class="op-panel" id="panel-SUBTRACT">
+        <div class="section-label">Subtract quantity 2 from quantity 1</div>
+        <div class="input-row two-col">
+          <div class="field">
+            <div class="field-label">Quantity 1</div>
+            <div class="input-group">
+              <input id="sub-val1" class="val-input" type="number" placeholder="Value"/>
+              <select id="sub-unit1" class="unit-select"></select>
+            </div>
+          </div>
+          <div class="arrow-col"><div class="arrow-icon">−</div></div>
+          <div class="field">
+            <div class="field-label">Quantity 2</div>
+            <div class="input-group">
+              <input id="sub-val2" class="val-input" type="number" placeholder="Value"/>
+              <select id="sub-unit2" class="unit-select"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-SUBTRACT">
+          <span class="btn-text">➖ &nbsp;Subtract</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="result-panel" id="res-SUBTRACT">
+          <div class="result-icon">✅</div>
+          <div>
+            <div class="result-lbl">Result</div>
+            <div class="result-val" id="resVal-SUBTRACT">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIVIDE -->
+      <div class="op-panel" id="panel-DIVIDE">
+        <div class="section-label">Divide quantity 1 by quantity 2</div>
+        <div class="input-row two-col">
+          <div class="field">
+            <div class="field-label">Quantity 1 (Dividend)</div>
+            <div class="input-group">
+              <input id="div-val1" class="val-input" type="number" placeholder="Value"/>
+              <select id="div-unit1" class="unit-select"></select>
+            </div>
+          </div>
+          <div class="arrow-col"><div class="arrow-icon">÷</div></div>
+          <div class="field">
+            <div class="field-label">Quantity 2 (Divisor)</div>
+            <div class="input-group">
+              <input id="div-val2" class="val-input" type="number" placeholder="Value"/>
+              <select id="div-unit2" class="unit-select"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" id="btn-DIVIDE">
+          <span class="btn-text">➗ &nbsp;Divide</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="result-panel" id="res-DIVIDE">
+          <div class="result-icon">✅</div>
+          <div>
+            <div class="result-lbl">Result</div>
+            <div class="result-val" id="resVal-DIVIDE">—</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LOCAL SESSION HISTORY -->
+    <div class="card">
+      <div class="history-header">
+        <div class="section-label" style="margin-bottom:0">Session History</div>
+        <button class="btn-clear-hist" id="btnClearHist">Clear</button>
+      </div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">
+          <div class="empty-icon">📋</div>
+          <div>No operations yet. Start calculating!</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/operations.js"></script>
+</body>
+</html>

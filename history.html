@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>History — Quanment</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <style>
+    .app-main { margin-top: 0; }
+
+    /* ── Login prompt card (shown when not logged in) ── */
+    #historyLoginPrompt {
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .login-prompt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+      animation: cardIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+
+    .login-prompt-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(124,90,240,0.15));
+      border: 1px solid rgba(79,142,247,0.2);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 22px;
+    }
+
+    .login-prompt-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text-1);
+      margin-bottom: 10px;
+    }
+
+    .login-prompt-desc {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .btn-login-prompt {
+      display: inline-block;
+      padding: 13px 30px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(79,142,247,0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-login-prompt:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 26px rgba(79,142,247,0.5);
+    }
+
+    /* ── History content (shown when logged in) ── */
+    #historyContent {
+      display: none;
+    }
+
+    /* Filter tabs */
+    .hist-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .hist-filter-btn {
+      padding: 7px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-2);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .hist-filter-btn:hover {
+      background: var(--surface-2);
+      color: var(--text-1);
+    }
+
+    .hist-filter-btn.active {
+      background: rgba(79,142,247,0.12);
+      border-color: rgba(79,142,247,0.4);
+      color: var(--accent);
+    }
+
+    /* Loading state */
+    #historyLoading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 48px;
+      color: var(--text-2);
+      font-size: 14px;
+    }
+
+    .loading-spinner {
+      width: 22px;
+      height: 22px;
+      border: 2px solid rgba(79,142,247,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Server history list */
+    #serverHistoryList {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    @media (max-width: 480px) {
+      .login-prompt-card { padding: 32px 22px; }
+      .hist-filters { gap: 6px; }
+      .hist-filter-btn { padding: 6px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">⚖️</div>
+      <span class="nav-brand-name">Quan<span>ment</span></span>
+    </a>
+    <div class="nav-center">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="history.html" class="nav-link active">History</a>
+    </div>
+    <div class="nav-right" id="navRight"></div>
+  </nav>
+
+  <main class="app-main">
+
+    <!-- ── NOT LOGGED IN: show sign-in prompt ── -->
+    <div id="historyLoginPrompt">
+      <div class="login-prompt-card">
+        <div class="login-prompt-icon">🔐</div>
+        <div class="login-prompt-title">Sign in to View History</div>
+        <div class="login-prompt-desc">
+          Your operation history is saved on the server.
+          Sign in to access all your past calculations.
+        </div>
+        <a href="login.html" class="btn-login-prompt">Login →</a>
+      </div>
+    </div>
+
+    <!-- ── LOGGED IN: show full history UI ── -->
+    <div id="historyContent">
+
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Operation History</h1>
+          <p>All your past calculations, fetched from the server.</p>
+        </div>
+        <div class="welcome-deco">📋</div>
+      </div>
+
+      <div class="card">
+
+        <!-- Filter by operation type -->
+        <div class="section-label">Filter by Operation</div>
+        <div class="hist-filters">
+          <button class="hist-filter-btn active" data-op="all">All</button>
+          <button class="hist-filter-btn" data-op="convert">Convert</button>
+          <button class="hist-filter-btn" data-op="compare">Compare</button>
+          <button class="hist-filter-btn" data-op="add">Add</button>
+          <button class="hist-filter-btn" data-op="subtract">Subtract</button>
+          <button class="hist-filter-btn" data-op="divide">Divide</button>
+        </div>
+
+        <!-- Loading indicator -->
+        <div id="historyLoading">
+          <div class="loading-spinner"></div>
+          <span>Loading history...</span>
+        </div>
+
+        <!-- History list (rendered by history.js) -->
+        <div id="serverHistoryList"></div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>
