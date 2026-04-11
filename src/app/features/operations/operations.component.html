@@ -1,0 +1,270 @@
+<app-navbar></app-navbar>
+
+<main class="app-main">
+
+  <!-- Welcome bar -->
+  <div class="welcome-bar">
+    <div class="welcome-text">
+      <h1>Quantity Operations</h1>
+      <p>Convert, compare, add, subtract, and divide across length, temperature, volume, and weight.</p>
+    </div>
+    <div class="welcome-deco">QM</div>
+  </div>
+
+  <!-- Measurement Type selector -->
+  <div class="section-label">Select Measurement Type</div>
+  <div class="type-grid">
+    <div class="type-card" *ngFor="let t of measurementTypes"
+         [class.active]="currentType === t"
+         (click)="selectType(t)">
+      <div class="type-icon">{{ typeIcons[t] }}</div>
+      <div class="type-label">{{ t }}</div>
+    </div>
+  </div>
+
+  <!-- Operation tabs -->
+  <div class="section-label">Select Operation</div>
+  <div class="op-tabs">
+    <button class="op-tab" *ngFor="let op of operationTypes"
+            [class.active]="currentOp === op"
+            (click)="selectOp(op)">
+      <span class="tab-icon">{{ opIcons[op] }}</span> {{ op | titlecase }}
+    </button>
+  </div>
+
+  <!-- Panel card -->
+  <div class="card" style="margin-bottom: 20px;">
+
+    <!-- Alert -->
+    <div class="alert" [class.show]="alertMsg"
+         [class.alert-error]="alertType==='error'"
+         [class.alert-success]="alertType==='success'">
+      <span>{{ alertType === 'error' ? '⚠️' : '✅' }}</span>
+      <span>{{ alertMsg }}</span>
+    </div>
+
+    <!-- ── CONVERT ── -->
+    <div class="op-panel" [class.active]="currentOp==='CONVERT'">
+      <div class="section-label">Convert</div>
+      <div class="input-row two-col">
+        <div class="field">
+          <div class="field-label-dash">From</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Enter value"
+                   [(ngModel)]="cvFromVal" (keyup.enter)="handleConvert()" />
+            <select class="unit-select" [(ngModel)]="cvFromUnit">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="arrow-col"><div class="arrow-icon">→</div></div>
+        <div class="field">
+          <div class="field-label-dash">To</div>
+          <div class="input-group">
+            <input class="val-input result-green" type="text" placeholder="Result"
+                   [value]="cvToVal" readonly />
+            <select class="unit-select" [(ngModel)]="cvToUnit">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" [class.loading]="loading['CONVERT']"
+              [disabled]="loading['CONVERT']" (click)="handleConvert()">
+        <span class="btn-text">🔄 &nbsp;Convert</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="result-panel" [class.show]="results['CONVERT']">
+        <div class="result-icon">✅</div>
+        <div>
+          <div class="result-lbl">Result</div>
+          <div class="result-val">{{ results['CONVERT'] }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPARE ── -->
+    <div class="op-panel" [class.active]="currentOp==='COMPARE'">
+      <div class="section-label">Compare two quantities</div>
+      <div class="input-row two-col">
+        <div class="field">
+          <div class="field-label-dash">Quantity 1</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="cmpVal1" (keyup.enter)="handleCompare()" />
+            <select class="unit-select" [(ngModel)]="cmpUnit1">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="arrow-col"><div class="arrow-icon">⚖️</div></div>
+        <div class="field">
+          <div class="field-label-dash">Quantity 2</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="cmpVal2" (keyup.enter)="handleCompare()" />
+            <select class="unit-select" [(ngModel)]="cmpUnit2">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" [class.loading]="loading['COMPARE']"
+              [disabled]="loading['COMPARE']" (click)="handleCompare()">
+        <span class="btn-text">⚖️ &nbsp;Compare</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="compare-badge" *ngIf="compareResult"
+           [class.show]="compareResult" [ngClass]="compareResult?.cls">
+        <span class="compare-icon">{{ compareResult?.icon }}</span>
+        <span class="compare-text">{{ compareResult?.text }}</span>
+      </div>
+    </div>
+
+    <!-- ── ADD ── -->
+    <div class="op-panel" [class.active]="currentOp==='ADD'">
+      <div class="section-label">Add two quantities</div>
+      <div class="input-row two-col">
+        <div class="field">
+          <div class="field-label-dash">Quantity 1</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="addVal1" (keyup.enter)="handleAdd()" />
+            <select class="unit-select" [(ngModel)]="addUnit1">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="arrow-col"><div class="arrow-icon">+</div></div>
+        <div class="field">
+          <div class="field-label-dash">Quantity 2</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="addVal2" (keyup.enter)="handleAdd()" />
+            <select class="unit-select" [(ngModel)]="addUnit2">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" [class.loading]="loading['ADD']"
+              [disabled]="loading['ADD']" (click)="handleAdd()">
+        <span class="btn-text">➕ &nbsp;Add</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="result-panel" [class.show]="results['ADD']">
+        <div class="result-icon">✅</div>
+        <div>
+          <div class="result-lbl">Result</div>
+          <div class="result-val">{{ results['ADD'] }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SUBTRACT ── -->
+    <div class="op-panel" [class.active]="currentOp==='SUBTRACT'">
+      <div class="section-label">Subtract quantity 2 from quantity 1</div>
+      <div class="input-row two-col">
+        <div class="field">
+          <div class="field-label-dash">Quantity 1</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="subVal1" (keyup.enter)="handleSubtract()" />
+            <select class="unit-select" [(ngModel)]="subUnit1">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="arrow-col"><div class="arrow-icon">−</div></div>
+        <div class="field">
+          <div class="field-label-dash">Quantity 2</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="subVal2" (keyup.enter)="handleSubtract()" />
+            <select class="unit-select" [(ngModel)]="subUnit2">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" [class.loading]="loading['SUBTRACT']"
+              [disabled]="loading['SUBTRACT']" (click)="handleSubtract()">
+        <span class="btn-text">➖ &nbsp;Subtract</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="result-panel" [class.show]="results['SUBTRACT']">
+        <div class="result-icon">✅</div>
+        <div>
+          <div class="result-lbl">Result</div>
+          <div class="result-val">{{ results['SUBTRACT'] }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DIVIDE ── -->
+    <div class="op-panel" [class.active]="currentOp==='DIVIDE'">
+      <div class="section-label">Divide quantity 1 by quantity 2</div>
+      <div class="input-row two-col">
+        <div class="field">
+          <div class="field-label-dash">Quantity 1 (Dividend)</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="divVal1" (keyup.enter)="handleDivide()" />
+            <select class="unit-select" [(ngModel)]="divUnit1">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="arrow-col"><div class="arrow-icon">÷</div></div>
+        <div class="field">
+          <div class="field-label-dash">Quantity 2 (Divisor)</div>
+          <div class="input-group">
+            <input class="val-input" type="number" placeholder="Value"
+                   [(ngModel)]="divVal2" (keyup.enter)="handleDivide()" />
+            <select class="unit-select" [(ngModel)]="divUnit2">
+              <option *ngFor="let u of units" [value]="u">{{ unitDisplay[u] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" [class.loading]="loading['DIVIDE']"
+              [disabled]="loading['DIVIDE']" (click)="handleDivide()">
+        <span class="btn-text">➗ &nbsp;Divide</span>
+        <span class="spinner"></span>
+      </button>
+      <div class="result-panel" [class.show]="results['DIVIDE']">
+        <div class="result-icon">✅</div>
+        <div>
+          <div class="result-lbl">Result</div>
+          <div class="result-val">{{ results['DIVIDE'] }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Session History -->
+  <div class="card">
+    <div class="history-header">
+      <div class="section-label" style="margin-bottom:0">Session History</div>
+      <button class="btn-clear-hist" (click)="clearHistory()">Clear</button>
+    </div>
+    <div class="history-list">
+      <div class="history-empty" *ngIf="sessionHistory.length === 0">
+        <div class="empty-icon">📋</div>
+        <div>No operations yet. Start calculating!</div>
+      </div>
+      <div class="history-item" *ngFor="let h of sessionHistory">
+        <span class="h-op-badge" [ngClass]="'op-' + h.op">{{ h.op }}</span>
+        <span class="h-type-badge">{{ h.type }}</span>
+        <span class="h-detail">
+          <span class="h-from">{{ h.fromStr }}</span>
+          <span class="h-sep">→</span>
+          <span class="h-to">{{ h.resultStr }}</span>
+        </span>
+        <span class="h-time">{{ h.time }}</span>
+      </div>
+    </div>
+  </div>
+
+</main>

@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <!-- Brand -->
+  <a class="nav-brand" (click)="navigate('/')">
+    <div class="nav-brand-icon">⚖️</div>
+    <span class="nav-brand-name">Quan<span>ment</span></span>
+  </a>
+
+  <!-- Center links -->
+  <div class="nav-center">
+    <a class="nav-link" [class.active]="isActive('/')" (click)="navigate('/')">Home</a>
+    <a class="nav-link" [class.active]="isActive('/operations')" (click)="navigate('/operations')">Operations</a>
+    <a class="nav-link" [class.active]="isActive('/history')" (click)="navigate('/history')">History</a>
+  </div>
+
+  <!-- Right side -->
+  <div class="nav-right">
+    <ng-container *ngIf="isLoggedIn; else guestButtons">
+      <div class="nav-avatar">{{ avatarLetter }}</div>
+      <span class="nav-username">{{ username }}</span>
+      <button class="btn-nav btn-nav-ghost" (click)="logout()">Logout</button>
+    </ng-container>
+
+    <ng-template #guestButtons>
+      <a class="btn-nav btn-nav-outline" (click)="navigate('/auth/login')">Login</a>
+      <a class="btn-nav btn-nav-solid" (click)="navigate('/auth/signup')">Sign Up</a>
+    </ng-template>
+  </div>
+</nav>

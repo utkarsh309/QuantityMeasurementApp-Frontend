@@ -1,0 +1,78 @@
+<app-navbar></app-navbar>
+
+<main class="app-main">
+
+  <!-- NOT LOGGED IN -->
+  <div class="history-login-prompt" *ngIf="!isLoggedIn">
+    <div class="login-prompt-card">
+      <div class="login-prompt-icon">🔐</div>
+      <div class="login-prompt-title">Sign in to View History</div>
+      <div class="login-prompt-desc">
+        Your operation history is saved on the server.
+        Sign in to access all your past calculations.
+      </div>
+      <button class="btn-login-prompt" (click)="goToLogin()">Login →</button>
+    </div>
+  </div>
+
+  <!-- LOGGED IN -->
+  <ng-container *ngIf="isLoggedIn">
+
+    <div class="welcome-bar">
+      <div class="welcome-text">
+        <h1>Operation History</h1>
+        <p>All your past calculations, fetched from the server.</p>
+      </div>
+      <div class="welcome-deco">📋</div>
+    </div>
+
+    <div class="card">
+
+      <!-- Filter tabs -->
+      <div class="section-label">Filter by Operation</div>
+      <div class="hist-filters">
+        <button class="hist-filter-btn"
+                *ngFor="let f of filters"
+                [class.active]="activeFilter === f"
+                (click)="loadHistory(f)">
+          {{ f | titlecase }}
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div style="display:flex;align-items:center;gap:14px;padding:48px;color:var(--text-2);font-size:14px;" *ngIf="loading">
+        <div class="loading-spinner"></div>
+        <span>Loading history...</span>
+      </div>
+
+      <!-- Error -->
+      <div class="history-empty" *ngIf="!loading && errorMsg">
+        <div class="empty-icon">⚠️</div>
+        <div>{{ errorMsg }}</div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="history-empty" *ngIf="!loading && !errorMsg && historyItems.length === 0">
+        <div class="empty-icon">📋</div>
+        <div>No history found for this operation.</div>
+      </div>
+
+      <!-- History list -->
+      <div class="history-list" *ngIf="!loading && !errorMsg && historyItems.length > 0">
+        <div class="history-item" *ngFor="let h of historyItems">
+          <ng-container *ngIf="formatEntry(h) as e">
+            <span class="h-op-badge" [ngClass]="'op-' + e.op">{{ e.op }}</span>
+            <span class="h-type-badge">{{ e.type }}</span>
+            <span class="h-detail">
+              <span class="h-from" [innerHTML]="e.fromStr"></span>
+              <span class="h-sep">→</span>
+              <span class="h-to">{{ e.result }}</span>
+            </span>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+</main>
