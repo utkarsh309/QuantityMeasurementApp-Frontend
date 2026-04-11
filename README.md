@@ -3,6 +3,7 @@
 
 **Trainee:** Utkarsh  
 **Branch:** `feat/html-css-js-core`
+**Branch:** `feat/angular-frontend`
 
 A clean, responsive frontend for the Quantity Measurement App built using pure HTML, CSS, and JavaScript — no frameworks.
 
