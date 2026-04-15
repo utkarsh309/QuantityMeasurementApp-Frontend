@@ -1,68 +1,70 @@
-# ⚖️ QuantityMeasurementApp-Frontend  
-
+# ⚖️ QuantityMeasurementApp-Frontend (Angular)  
 
 **Trainee:** Utkarsh  
-**Branch:** `feat/html-css-js-core`
-**Branch:** `feat/angular-frontend`
-
-A clean, responsive frontend for the Quantity Measurement App built using pure HTML, CSS, and JavaScript — no frameworks.
+**Branch:** `feat/angular-frontend`  
 
 ---
 
-## 🔗 Backend Info
+## 🚀 Deployment Links  
 
-| Detail | Value |
-|---|---|
-| Framework | Spring Boot |
-| Auth | JWT + OAuth2 (Google) |
-| Database | MySQL |
-| Base URL | `http://localhost:8081` |
-
-> Backend runs separately. This frontend connects to it via REST APIs.
+- **Frontend Deployed URL:**  http://quanment-frontend.s3-website.ap-south-1.amazonaws.com
 
 ---
 
-## 📁 Structure
+## 📌 About Project  
+
+A clean, modular, and scalable frontend for the Quantity Measurement App built using Angular.  
+This project is an upgraded version of the earlier HTML/CSS/JS implementation, now using Angular architecture for better maintainability, scalability, and performance.  
+
+---
+
+## 📁 Project Structure  
 
 ```
-├── index.html          ← Login page
-├── register.html       ← Register page
-├── dashboard.html      ← Main dashboard
-├── css/
-│   ├── auth.css        ← Login & register styles
-│   └── dashboard.css   ← Dashboard styles
-└── js/
-    ├── auth.js         ← Login & register logic
-    └── dashboard.js    ← All operations & history
+src/
+└── app/
+    ├── core/                        ← Singleton services & guards
+    │   ├── services/
+    │   │   ├── auth.service.ts      ← JWT token management, OAuth
+    │   │   └── quantity.service.ts  ← All API calls (convert/compare/add/subtract/divide)
+    │   ├── guards/
+    │   │   └── auth.guard.ts        ← GuestGuard (login/signup) & AuthGuard
+    │   └── interceptors/            ← (reserved for future HTTP interceptors)
+    │
+    ├── shared/                      ← Reusable across features
+    │   ├── components/
+    │   │   └── navbar/              ← NavbarComponent (used on every page)
+    │   ├── models/
+    │   │   └── quantity.models.ts   ← TypeScript interfaces & unit constants
+    │   └── shared.module.ts
+    │
+    └── features/                    ← Lazy-loaded feature modules
+        ├── home/                    ← Landing page  (route: /)
+        ├── auth/
+        │   ├── login/               ← Login page    (route: /login)
+        │   └── signup/              ← Signup page   (route: /signup)
+        ├── operations/              ← Operations    (route: /operations)
+        └── history/                 ← History       (route: /history)
 ```
 
----
-
-## ✨ Features
-
-- **Login / Register** with JWT authentication
-- **3 Measurement Types** — Length, Temperature, Volume
-- **5 Operations** — Convert, Compare, Add, Subtract, Divide
-- **Operation History** — tracks last 30 operations in session
-- No frameworks — pure HTML, CSS, JavaScript
 
 ---
 
-## 🚀 How to Run
+## ✨ Features  
 
-1. Make sure the **Spring Boot backend is running** on port `8081`
-2. Open `index.html` in your browser
-
-   **Or use Live Server (VS Code):**
-   ```
-   Right-click index.html → Open with Live Server
-   ```
-
-3. Register an account → Login → Use the dashboard
+- **Login / Register** with JWT authentication  
+- **Google OAuth2 Integration**  
+- **Route Guards** for secure navigation  
+- **Lazy Loading** for optimized performance  
+- **Reusable Components (Navbar, Shared Modules)**  
+- **3 Measurement Types** — Length, Temperature, Volume  
+- **5 Operations** — Convert, Compare, Add, Subtract, Divide  
+- **Operation History** — fetched from backend API  
+- Clean and scalable Angular architecture (Core, Shared, Feature modules)  
 
 ---
 
-## 🔌 API Endpoints Used
+## 🔌 API Endpoints Used  
 
 | Operation | Endpoint |
 |---|---|
@@ -73,9 +75,25 @@ A clean, responsive frontend for the Quantity Measurement App built using pure H
 | Add | `POST /api/v1/quantities/add` |
 | Subtract | `POST /api/v1/quantities/subtract` |
 | Divide | `POST /api/v1/quantities/divide` |
+| History | `GET /api/v1/quantities/history/{operation}` |
 
-All `/api/v1/**` requests include `Authorization: Bearer <token>` header.
+
 
 ---
 
+## ⚙️ Configuration  
+
+Backend URLs and environment variables are managed using Angular environment configuration files.  
+`src/environments/environment.ts`
+
+
+---
+
+## 🏗️ Build Output  
+
+The production build generates optimized files inside:  
+`dist/quanment-angular/`
+
+
+---
 
