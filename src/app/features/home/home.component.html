@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⚡ Microservices Powered</div>
+  <h1>Measure Anything,<br><span>Convert Everything</span></h1>
+  <p>Compare, convert, and calculate across length, temperature, volume, and weight — all in one place.</p>
+  <div class="hero-btns">
+    <button class="btn-hero-primary" (click)="goToOperations()">Start Converting →</button>
+    <button class="btn-hero-outline" (click)="goToSignup()" *ngIf="!isLoggedIn()">Create Free Account</button>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-value">4</div>
+    <div class="stat-label">Measurement Types</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">5</div>
+    <div class="stat-label">Operations</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">12</div>
+    <div class="stat-label">Unit Options</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">100%</div>
+    <div class="stat-label">Free to Use</div>
+  </div>
+</div>
+
+<!-- FEATURE CARDS -->
+<section class="features">
+  <div class="features-label">What you can do</div>
+  <div class="features-grid">
+
+    <div class="feature-card fc-1" (click)="goToOperations()">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-title">Compare &amp; Convert</div>
+      <div class="feature-desc">Instantly convert between units or compare two quantities to see which is greater.</div>
+      <div class="feature-link">Try it <span>→</span></div>
+    </div>
+
+    <div class="feature-card fc-2" (click)="goToOperations()">
+      <div class="feature-icon">🔢</div>
+      <div class="feature-title">Operations</div>
+      <div class="feature-desc">Add, subtract, and divide quantities — even across different unit types.</div>
+      <div class="feature-link">Try it <span>→</span></div>
+    </div>
+
+    <div class="feature-card fc-3" (click)="goToHistory()">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">History</div>
+      <div class="feature-desc">Every operation is saved. Review your past calculations anytime after signing in.</div>
+      <div class="feature-link">View History <span>→</span></div>
+    </div>
+
+  </div>
+</section>
